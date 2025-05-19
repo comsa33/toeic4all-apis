@@ -1,0 +1,1374 @@
+{
+  "info": {
+    "name": "TOEIC4ALL API (사용자)",
+    "description": "TOEIC4ALL 토익 문제 조회 API 컬렉션",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "12345678"
+  },
+  "item": [
+    {
+      "name": "사용자 API (User API)",
+      "description": "토익 문제 조회를 위한 사용자용 API입니다.",
+      "item": [
+        {
+          "name": "🟢 Part 5 사용자 API",
+          "description": "Part 5 문법/어휘 문제 조회",
+          "item": [
+            {
+              "name": "문제 조회",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{apis_url}}/questions/part5/?category=문법&subtype=시제&difficulty=Medium&limit=10&page=1",
+                  "host": [
+                    "{{apis_url}}"
+                  ],
+                  "path": [
+                    "questions",
+                    "part5",
+                    ""
+                  ],
+                  "query": [
+                    {
+                      "key": "category",
+                      "value": "문법",
+                      "description": "문법 카테고리 (문법, 어휘, 전치사/접속사/접속부사)"
+                    },
+                    {
+                      "key": "subtype",
+                      "value": "시제",
+                      "description": "서브 카테고리 (시제, 수일치, 동의어 등)"
+                    },
+                    {
+                      "key": "difficulty",
+                      "value": "Medium",
+                      "description": "난이도 (Easy, Medium, Hard)"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "10",
+                      "description": "조회할 문제 수 (최대 30)"
+                    },
+                    {
+                      "key": "page",
+                      "value": "1",
+                      "description": "페이지 번호"
+                    }
+                  ]
+                },
+                "description": "Part 5 문법/어휘 문제를 필터링하여 랜덤으로 조회합니다.\n\n**쿼리 파라미터**\n- category: 문법 카테고리 (문법, 어휘, 전치사/접속사/접속부사) (선택)\n- subtype: 서브 카테고리 (시제, 수일치, 동의어 등) (선택)\n- difficulty: 난이도 (Easy, Medium, Hard) (선택)\n- keyword: 검색 키워드 (문제/선택지 내용) (선택)\n- limit: 조회할 문제 수 (최대 30) (기본값: 10)\n- page: 페이지 번호 (기본값: 1)"
+              },
+              "response": [
+                {
+                  "name": "문제 조회 응답",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [],
+                    "url": {
+                      "raw": "{{apis_url}}/questions/part5/?category=문법&subtype=시제&difficulty=Medium&limit=10&page=1",
+                      "host": [
+                        "{{apis_url}}"
+                      ],
+                      "path": [
+                        "questions",
+                        "part5",
+                        ""
+                      ],
+                      "query": [
+                        {
+                          "key": "category",
+                          "value": "문법"
+                        },
+                        {
+                          "key": "subtype",
+                          "value": "시제"
+                        },
+                        {
+                          "key": "difficulty",
+                          "value": "Medium"
+                        },
+                        {
+                          "key": "limit",
+                          "value": "10"
+                        },
+                        {
+                          "key": "page",
+                          "value": "1"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "{\n  \"success\": true,\n  \"count\": 10,\n  \"total\": 45,\n  \"page\": 1,\n  \"total_pages\": 5,\n  \"questions\": [\n    {\n      \"id\": \"658a1b2c3d4e5f6a7b8c9d0e\",\n      \"questionCategory\": \"문법\",\n      \"questionSubType\": \"시제\",\n      \"difficulty\": \"Medium\",\n      \"questionText\": \"The sales figures ___ significantly since last quarter.\",\n      \"questionTranslation\": \"지난 분기 이후 매출 수치가 크게 ___.\",\n      \"choices\": [\n        {\"id\": \"A\", \"text\": \"rise\", \"translation\": \"오른다\"},\n        {\"id\": \"B\", \"text\": \"rose\", \"translation\": \"올랐다\"},\n        {\"id\": \"C\", \"text\": \"have risen\", \"translation\": \"올랐다\"},\n        {\"id\": \"D\", \"text\": \"rising\", \"translation\": \"오르는 중이다\"}\n      ]\n    },\n    /* 이하 생략 (총 10개 문제) */\n  ]\n}"
+                }
+              ]
+            },
+            {
+              "name": "문제 답안/해설 조회",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{apis_url}}/questions/part5/{{question_id}}/answer",
+                  "host": [
+                    "{{apis_url}}"
+                  ],
+                  "path": [
+                    "questions",
+                    "part5",
+                    "{{question_id}}",
+                    "answer"
+                  ]
+                },
+                "description": "Part 5 문제의 정답, 해설, 어휘 정보를 조회합니다.\n\n**경로 파라미터**\n- question_id: 문제 ID"
+              },
+              "response": [
+                {
+                  "name": "문제 답안/해설 응답",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [],
+                    "url": {
+                      "raw": "{{apis_url}}/questions/part5/658a1b2c3d4e5f6a7b8c9d0e/answer",
+                      "host": [
+                        "{{apis_url}}"
+                      ],
+                      "path": [
+                        "questions",
+                        "part5",
+                        "658a1b2c3d4e5f6a7b8c9d0e",
+                        "answer"
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "{\n  \"id\": \"658a1b2c3d4e5f6a7b8c9d0e\",\n  \"answer\": \"C\",\n  \"explanation\": \"과거 시점 시작→현재까지 결과 = 현재완료 'have risen'.\",\n  \"vocabulary\": [\n    {\n      \"word\": \"figure\",\n      \"meaning\": \"수치\",\n      \"partOfSpeech\": \"noun\",\n      \"example\": \"The sales figures increased last year.\",\n      \"exampleTranslation\": \"지난해 매출 수치가 증가했다.\"\n    }\n  ]\n}"
+                }
+              ]
+            },
+            {
+              "name": "카테고리 목록 조회",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{apis_url}}/questions/part5/categories?used_only=false",
+                  "host": [
+                    "{{apis_url}}"
+                  ],
+                  "path": [
+                    "questions",
+                    "part5",
+                    "categories"
+                  ],
+                  "query": [
+                    {
+                      "key": "used_only",
+                      "value": "false",
+                      "description": "True인 경우 데이터베이스에 실제 사용 중인 카테고리만 반환"
+                    }
+                  ]
+                },
+                "description": "Part 5 문법 카테고리 목록을 반환합니다.\n\n**쿼리 파라미터**\n- used_only: True인 경우 데이터베이스에 실제 사용 중인 카테고리만 반환 (기본값: false)"
+              },
+              "response": [
+                {
+                  "name": "카테고리 목록 응답",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [],
+                    "url": {
+                      "raw": "{{apis_url}}/questions/part5/categories?used_only=false",
+                      "host": [
+                        "{{apis_url}}"
+                      ],
+                      "path": [
+                        "questions",
+                        "part5",
+                        "categories"
+                      ],
+                      "query": [
+                        {
+                          "key": "used_only",
+                          "value": "false"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "[\"문법\", \"어휘\", \"전치사/접속사/접속부사\"]"
+                }
+              ]
+            },
+            {
+              "name": "서브타입 목록 조회",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{apis_url}}/questions/part5/subtypes?category=문법&used_only=false",
+                  "host": [
+                    "{{apis_url}}"
+                  ],
+                  "path": [
+                    "questions",
+                    "part5",
+                    "subtypes"
+                  ],
+                  "query": [
+                    {
+                      "key": "category",
+                      "value": "문법",
+                      "description": "문법 카테고리 (문법, 어휘, 전치사/접속사/접속부사)"
+                    },
+                    {
+                      "key": "used_only",
+                      "value": "false",
+                      "description": "True인 경우 데이터베이스에 실제 사용 중인 서브타입만 반환"
+                    }
+                  ]
+                },
+                "description": "Part 5 문법 서브카테고리 목록을 반환합니다.\n\n**쿼리 파라미터**\n- category: 문법 카테고리 (문법, 어휘, 전치사/접속사/접속부사) (선택)\n- used_only: True인 경우 데이터베이스에 실제 사용 중인 서브타입만 반환 (기본값: false)"
+              },
+              "response": [
+                {
+                  "name": "서브타입 목록 응답 (특정 카테고리)",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [],
+                    "url": {
+                      "raw": "{{apis_url}}/questions/part5/subtypes?category=문법&used_only=false",
+                      "host": [
+                        "{{apis_url}}"
+                      ],
+                      "path": [
+                        "questions",
+                        "part5",
+                        "subtypes"
+                      ],
+                      "query": [
+                        {
+                          "key": "category",
+                          "value": "문법"
+                        },
+                        {
+                          "key": "used_only",
+                          "value": "false"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "[\"시제\", \"수일치\", \"태(수동/능동)\", \"관계사\", \"비교구문\", \"가정법\", \"부정사/동명사\"]"
+                },
+                {
+                  "name": "서브타입 목록 응답 (전체)",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [],
+                    "url": {
+                      "raw": "{{apis_url}}/questions/part5/subtypes?used_only=false",
+                      "host": [
+                        "{{apis_url}}"
+                      ],
+                      "path": [
+                        "questions",
+                        "part5",
+                        "subtypes"
+                      ],
+                      "query": [
+                        {
+                          "key": "used_only",
+                          "value": "false"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "{\n  \"문법\": [\n    \"시제\",\n    \"수일치\",\n    \"태(수동/능동)\",\n    \"관계사\",\n    \"비교구문\",\n    \"가정법\",\n    \"부정사/동명사\"\n  ],\n  \"어휘\": [\n    \"동의어\",\n    \"반의어\",\n    \"관용표현\",\n    \"Collocation\",\n    \"Phrasal Verb\"\n  ],\n  \"전치사/접속사/접속부사\": [\n    \"시간/장소 전치사\",\n    \"원인/결과\",\n    \"양보\",\n    \"조건\",\n    \"접속부사\"\n  ]\n}"
+                }
+              ]
+            },
+            {
+              "name": "난이도 목록 조회",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{apis_url}}/questions/part5/difficulties?category=문법&subtype=시제&used_only=false",
+                  "host": [
+                    "{{apis_url}}"
+                  ],
+                  "path": [
+                    "questions",
+                    "part5",
+                    "difficulties"
+                  ],
+                  "query": [
+                    {
+                      "key": "category",
+                      "value": "문법",
+                      "description": "문법 카테고리 (문법, 어휘, 전치사/접속사/접속부사)"
+                    },
+                    {
+                      "key": "subtype",
+                      "value": "시제",
+                      "description": "서브 카테고리"
+                    },
+                    {
+                      "key": "used_only",
+                      "value": "false",
+                      "description": "True인 경우 데이터베이스에 실제 사용 중인 난이도만 반환"
+                    }
+                  ]
+                },
+                "description": "Part 5 난이도 목록을 반환합니다.\n\n**쿼리 파라미터**\n- category: 문법 카테고리 (문법, 어휘, 전치사/접속사/접속부사) (선택)\n- subtype: 서브 카테고리 (선택)\n- used_only: True인 경우 데이터베이스에 실제 사용 중인 난이도만 반환 (기본값: false)"
+              },
+              "response": [
+                {
+                  "name": "난이도 목록 응답",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [],
+                    "url": {
+                      "raw": "{{apis_url}}/questions/part5/difficulties?category=문법&subtype=시제&used_only=false",
+                      "host": [
+                        "{{apis_url}}"
+                      ],
+                      "path": [
+                        "questions",
+                        "part5",
+                        "difficulties"
+                      ],
+                      "query": [
+                        {
+                          "key": "category",
+                          "value": "문법"
+                        },
+                        {
+                          "key": "subtype",
+                          "value": "시제"
+                        },
+                        {
+                          "key": "used_only",
+                          "value": "false"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "[\"Easy\", \"Medium\", \"Hard\"]"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "🟢 Part 6 사용자 API",
+          "description": "Part 6 문맥 이해 문제 조회",
+          "item": [
+            {
+              "name": "문제 세트 조회",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{apis_url}}/questions/part6/?passage_type=Email/Letter&difficulty=Medium&limit=2&page=1",
+                  "host": [
+                    "{{apis_url}}"
+                  ],
+                  "path": [
+                    "questions",
+                    "part6",
+                    ""
+                  ],
+                  "query": [
+                    {
+                      "key": "passage_type",
+                      "value": "Email/Letter",
+                      "description": "지문 유형 (Email/Letter, Memo, Notice 등)"
+                    },
+                    {
+                      "key": "difficulty",
+                      "value": "Medium",
+                      "description": "난이도 (Easy, Medium, Hard)"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "2",
+                      "description": "조회할 세트 수 (최대 4)"
+                    },
+                    {
+                      "key": "page",
+                      "value": "1",
+                      "description": "페이지 번호"
+                    }
+                  ]
+                },
+                "description": "Part 6 문맥 이해 문제 세트를 필터링하여 랜덤으로 조회합니다.\n\n**쿼리 파라미터**\n- passage_type: 지문 유형 (Email/Letter, Memo, Notice 등) (선택)\n- difficulty: 난이도 (Easy, Medium, Hard) (선택)\n- limit: 조회할 세트 수 (최대 4) (기본값: 2)\n- page: 페이지 번호 (기본값: 1)"
+              },
+              "response": [
+                {
+                  "name": "문제 세트 조회 응답",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [],
+                    "url": {
+                      "raw": "{{apis_url}}/questions/part6/?passage_type=Email/Letter&difficulty=Medium&limit=2&page=1",
+                      "host": [
+                        "{{apis_url}}"
+                      ],
+                      "path": [
+                        "questions",
+                        "part6",
+                        ""
+                      ],
+                      "query": [
+                        {
+                          "key": "passage_type",
+                          "value": "Email/Letter"
+                        },
+                        {
+                          "key": "difficulty",
+                          "value": "Medium"
+                        },
+                        {
+                          "key": "limit",
+                          "value": "2"
+                        },
+                        {
+                          "key": "page",
+                          "value": "1"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "{\n  \"success\": true,\n  \"count\": 2,\n  \"total\": 10,\n  \"page\": 1,\n  \"total_pages\": 5,\n  \"sets\": [\n    {\n      \"id\": \"658a1b2c3d4e5f6a7b8c9d0e\",\n      \"passageType\": \"Email/Letter\",\n      \"difficulty\": \"Medium\",\n      \"passage\": \"Subject: Team Building Workshop\\n\\n(A) Dear Marketing Team,\\nWe are excited to announce that a one-day workshop has been ___1___ for Friday, July 12. (B) The program will focus on strengthening communication skills; ___2___, it will include outdoor activities to encourage collaboration. ___3___ (C) Please review the attached agenda and confirm your attendance by June 30. (D)\\n\\nBest regards,\\nHR Department\",\n      \"passageTranslation\": \"제목: 팀 빌딩 워크숍 안내\\n\\n(A) 마케팅팀 여러분께,\\n7월 12일(금) 하루 일정으로 팀 빌딩 워크숍이 ___1___ 예정되어 있습니다. (B) 이번 프로그램은 의사소통 역량 강화에 초점을 두며, ___2___ 야외 활동을 통해 협업을 장려할 예정입니다. ___3___ (C) 첨부된 일정을 확인하시고 6월 30일까지 참석 여부를 회신해 주시기 바랍니다. (D)\\n\\n인사팀 드림\",\n      \"questions\": [\n        {\n          \"blankNumber\": 1,\n          \"questionType\": \"어휘/문법\",\n          \"choices\": [\n            {\"id\": \"A\", \"text\": \"arranged\", \"translation\": \"준비된\"},\n            {\"id\": \"B\", \"text\": \"arrange\", \"translation\": \"준비하다\"},\n            {\"id\": \"C\", \"text\": \"arranging\", \"translation\": \"준비 중인\"},\n            {\"id\": \"D\", \"text\": \"arrangement\", \"translation\": \"준비\"}\n          ]\n        },\n        /* 이하 생략 (4개 질문) */\n      ]\n    },\n    /* 이하 생략 (총 2개 세트) */\n  ]\n}"
+                }
+              ]
+            },
+            {
+              "name": "문제 답안/해설 조회",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{apis_url}}/questions/part6/{{set_id}}/answers/{{question_seq}}",
+                  "host": [
+                    "{{apis_url}}"
+                  ],
+                  "path": [
+                    "questions",
+                    "part6",
+                    "{{set_id}}",
+                    "answers",
+                    "{{question_seq}}"
+                  ]
+                },
+                "description": "Part 6 문제 세트 내 특정 문제의 정답과 해설을 조회합니다.\n\n**경로 파라미터**\n- set_id: 문제 세트 ID\n- question_seq: 문제 번호(blankNumber)"
+              },
+              "response": [
+                {
+                  "name": "문제 답안/해설 응답",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [],
+                    "url": {
+                      "raw": "{{apis_url}}/questions/part6/658a1b2c3d4e5f6a7b8c9d0e/answers/1",
+                      "host": [
+                        "{{apis_url}}"
+                      ],
+                      "path": [
+                        "questions",
+                        "part6",
+                        "658a1b2c3d4e5f6a7b8c9d0e",
+                        "answers",
+                        "1"
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "{\n  \"set_id\": \"658a1b2c3d4e5f6a7b8c9d0e\",\n  \"question_seq\": 1,\n  \"answer\": \"A\",\n  \"explanation\": \"'has been arranged' 현재완료 수동태 사용.\"\n}"
+                }
+              ]
+            },
+            {
+              "name": "지문 유형 목록 조회",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{apis_url}}/questions/part6/passage_types?used_only=false",
+                  "host": [
+                    "{{apis_url}}"
+                  ],
+                  "path": [
+                    "questions",
+                    "part6",
+                    "passage_types"
+                  ],
+                  "query": [
+                    {
+                      "key": "used_only",
+                      "value": "false",
+                      "description": "True인 경우 데이터베이스에 실제 사용 중인 지문 유형만 반환"
+                    }
+                  ]
+                },
+                "description": "Part 6 지문 유형 목록을 반환합니다.\n\n**쿼리 파라미터**\n- used_only: True인 경우 데이터베이스에 실제 사용 중인 지문 유형만 반환 (기본값: false)"
+              },
+              "response": [
+                {
+                  "name": "지문 유형 목록 응답",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [],
+                    "url": {
+                      "raw": "{{apis_url}}/questions/part6/passage_types?used_only=false",
+                      "host": [
+                        "{{apis_url}}"
+                      ],
+                      "path": [
+                        "questions",
+                        "part6",
+                        "passage_types"
+                      ],
+                      "query": [
+                        {
+                          "key": "used_only",
+                          "value": "false"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "[\n  \"Email/Letter\",\n  \"Memo\",\n  \"Advertisement\",\n  \"Notice\",\n  \"Article\",\n  \"Instruction\",\n  \"Form\",\n  \"Schedule\",\n  \"Newsletter\"\n]"
+                }
+              ]
+            },
+            {
+              "name": "난이도 목록 조회",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{apis_url}}/questions/part6/difficulties?passage_type=Email/Letter&used_only=false",
+                  "host": [
+                    "{{apis_url}}"
+                  ],
+                  "path": [
+                    "questions",
+                    "part6",
+                    "difficulties"
+                  ],
+                  "query": [
+                    {
+                      "key": "passage_type",
+                      "value": "Email/Letter",
+                      "description": "지문 유형 (Email/Letter, Memo, Notice 등)"
+                    },
+                    {
+                      "key": "used_only",
+                      "value": "false",
+                      "description": "True인 경우 데이터베이스에 실제 사용 중인 난이도만 반환"
+                    }
+                  ]
+                },
+                "description": "Part 6 난이도 목록을 반환합니다.\n\n**쿼리 파라미터**\n- passage_type: 지문 유형 (Email/Letter, Memo, Notice 등) (선택)\n- used_only: True인 경우 데이터베이스에 실제 사용 중인 난이도만 반환 (기본값: false)"
+              },
+              "response": [
+                {
+                  "name": "난이도 목록 응답",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [],
+                    "url": {
+                      "raw": "{{apis_url}}/questions/part6/difficulties?passage_type=Email/Letter&used_only=false",
+                      "host": [
+                        "{{apis_url}}"
+                      ],
+                      "path": [
+                        "questions",
+                        "part6",
+                        "difficulties"
+                      ],
+                      "query": [
+                        {
+                          "key": "passage_type",
+                          "value": "Email/Letter"
+                        },
+                        {
+                          "key": "used_only",
+                          "value": "false"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "[\"Easy\", \"Medium\", \"Hard\"]"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "🟢 Part 7 사용자 API",
+          "description": "Part 7 지문 이해 문제 조회",
+          "item": [
+            {
+              "name": "문제 세트 조회",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{apis_url}}/questions/part7/?set_type=Single&passage_types[]=Article&difficulty=Medium&limit=1&page=1",
+                  "host": [
+                    "{{apis_url}}"
+                  ],
+                  "path": [
+                    "questions",
+                    "part7",
+                    ""
+                  ],
+                  "query": [
+                    {
+                      "key": "set_type",
+                      "value": "Single",
+                      "description": "문제 세트 유형 (Single, Double, Triple)"
+                    },
+                    {
+                      "key": "passage_types[]",
+                      "value": "Article",
+                      "description": "지문 유형 (배열, 최대 set_type에 따라 1-3개)"
+                    },
+                    {
+                      "key": "difficulty",
+                      "value": "Medium",
+                      "description": "난이도 (Easy, Medium, Hard)"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "1",
+                      "description": "조회할 세트 수"
+                    },
+                    {
+                      "key": "page",
+                      "value": "1",
+                      "description": "페이지 번호"
+                    }
+                  ]
+                },
+                "description": "Part 7 지문 이해 문제 세트를 필터링하여 랜덤으로 조회합니다.\n\n**쿼리 파라미터**\n- set_type: 문제 세트 유형 (Single, Double, Triple) (필수)\n- passage_types: 지문 유형 리스트 (최대 set_type에 따라 1-3개 지정 가능) (선택)\n- difficulty: 난이도 (Easy, Medium, Hard) (선택)\n- limit: 조회할 세트 수 (기본값: 1)\n- page: 페이지 번호 (기본값: 1)"
+              },
+              "response": [
+                {
+                  "name": "문제 세트 조회 응답 (Single)",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [],
+                    "url": {
+                      "raw": "{{apis_url}}/questions/part7/?set_type=Single&passage_types[]=Article&difficulty=Medium&limit=1&page=1",
+                      "host": [
+                        "{{apis_url}}"
+                      ],
+                      "path": [
+                        "questions",
+                        "part7",
+                        ""
+                      ],
+                      "query": [
+                        {
+                          "key": "set_type",
+                          "value": "Single"
+                        },
+                        {
+                          "key": "passage_types[]",
+                          "value": "Article"
+                        },
+                        {
+                          "key": "difficulty",
+                          "value": "Medium"
+                        },
+                        {
+                          "key": "limit",
+                          "value": "1"
+                        },
+                        {
+                          "key": "page",
+                          "value": "1"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "{\n  \"success\": true,\n  \"count\": 1,\n  \"total\": 15,\n  \"page\": 1,\n  \"total_pages\": 15,\n  \"sets\": [\n    {\n      \"id\": \"658a1b2c3d4e5f6a7b8c9d0e\",\n      \"difficulty\": \"Medium\",\n      \"questionSetType\": \"Single\",\n      \"passages\": [\n        {\n          \"seq\": 1,\n          \"type\": \"Article\",\n          \"text\": \"City Gazette — Technology Section\\n\\nAccording to a recent survey, more than 60 % of commuters now use mobile apps to track bus arrival times....\",\n          \"translation\": \"시티 가제트 — 기술 섹션\\n\\n최근 조사에 따르면 통근자의 60 % 이상이 버스 도착 시간을 확인하기 위해 모바일 앱을 사용하고 있습니다....\"\n        }\n      ],\n      \"questions\": [\n        {\n          \"questionSeq\": 1,\n          \"questionType\": \"주제/목적\",\n          \"questionText\": \"What is the main topic of the article?\",\n          \"questionTranslation\": \"이 기사의 주요 주제는 무엇인가요?\",\n          \"choices\": [\n            {\"id\": \"A\", \"text\": \"The history of public transportation\", \"translation\": \"대중교통의 역사\"},\n            {\"id\": \"B\", \"text\": \"New bus routes in the city\", \"translation\": \"도시의 새로운 버스 노선\"},\n            {\"id\": \"C\", \"text\": \"Mobile technology for commuters\", \"translation\": \"통근자를 위한 모바일 기술\"},\n            {\"id\": \"D\", \"text\": \"Rising costs of public transportation\", \"translation\": \"증가하는 대중교통 비용\"}\n          ]\n        },\n        /* 이하 생략 (3-4개 질문) */\n      ]\n    }\n  ]\n}"
+                },
+                {
+                  "name": "문제 세트 조회 응답 (Double)",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [],
+                    "url": {
+                      "raw": "{{apis_url}}/questions/part7/?set_type=Double&passage_types[]=Email&passage_types[]=Letter&difficulty=Medium&limit=1&page=1",
+                      "host": [
+                        "{{apis_url}}"
+                      ],
+                      "path": [
+                        "questions",
+                        "part7",
+                        ""
+                      ],
+                      "query": [
+                        {
+                          "key": "set_type",
+                          "value": "Double"
+                        },
+                        {
+                          "key": "passage_types[]",
+                          "value": "Email"
+                        },
+                        {
+                          "key": "passage_types[]",
+                          "value": "Letter"
+                        },
+                        {
+                          "key": "difficulty",
+                          "value": "Medium"
+                        },
+                        {
+                          "key": "limit",
+                          "value": "1"
+                        },
+                        {
+                          "key": "page",
+                          "value": "1"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "{\n  \"success\": true,\n  \"count\": 1,\n  \"total\": 8,\n  \"page\": 1,\n  \"total_pages\": 8,\n  \"sets\": [\n    {\n      \"id\": \"758a1b2c3d4e5f6a7b8c9d0f\",\n      \"difficulty\": \"Medium\",\n      \"questionSetType\": \"Double\",\n      \"passages\": [\n        {\n          \"seq\": 1,\n          \"type\": \"Email\",\n          \"text\": \"From: marketing@globex.com\\nTo: j.smith@example.com\\nSubject: Website Redesign Project\\n\\nDear Mr. Smith,\\n\\nWe are pleased to inform you...\",\n          \"translation\": \"보낸 사람: marketing@globex.com\\n받는 사람: j.smith@example.com\\n제목: 웹사이트 리디자인 프로젝트\\n\\nSmith 님께,\\n\\n알려드리게 되어 기쁩니다...\"\n        },\n        {\n          \"seq\": 2,\n          \"type\": \"Letter\",\n          \"text\": \"J. Smith & Associates\\n123 Business St.\\nNew York, NY 10001\\n\\nGlobex Corporation\\nAttn: Marketing Department\\n456 Corporate Ave.\\nNew York, NY 10002\\n\\nDear Globex Team,\\n\\nThank you for your email regarding...\",\n          \"translation\": \"J. Smith & Associates\\n123 Business St.\\nNew York, NY 10001\\n\\nGlobex Corporation\\nAttn: Marketing Department\\n456 Corporate Ave.\\nNew York, NY 10002\\n\\nGlobex 팀께,\\n\\n웹사이트 리디자인 프로젝트에 관한 이메일에 감사드립니다...\"\n        }\n      ],\n      \"questions\": [\n        {\n          \"questionSeq\": 1,\n          \"questionType\": \"주제/목적\",\n          \"questionText\": \"What is the purpose of the email from Globex Corporation?\",\n          \"questionTranslation\": \"Globex Corporation의 이메일의 목적은 무엇인가요?\",\n          \"choices\": [\n            {\"id\": \"A\", \"text\": \"To request a proposal for a website redesign\", \"translation\": \"웹사이트 리디자인을 위한 제안 요청\"},\n            {\"id\": \"B\", \"text\": \"To confirm receipt of payment\", \"translation\": \"결제 수령 확인\"},\n            {\"id\": \"C\", \"text\": \"To schedule a meeting\", \"translation\": \"회의 일정 잡기\"},\n            {\"id\": \"D\", \"text\": \"To announce a new marketing campaign\", \"translation\": \"새로운 마케팅 캠페인 발표\"}\n          ]\n        },\n        /* 이하 생략 (5개 질문) */\n      ]\n    }\n  ]\n}"
+                }
+              ]
+            },
+            {
+              "name": "문제 답안/해설 조회",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{apis_url}}/questions/part7/{{set_id}}/answers/{{question_seq}}",
+                  "host": [
+                    "{{apis_url}}"
+                  ],
+                  "path": [
+                    "questions",
+                    "part7",
+                    "{{set_id}}",
+                    "answers",
+                    "{{question_seq}}"
+                  ]
+                },
+                "description": "Part 7 문제 세트 내 특정 문제의 정답과 해설을 조회합니다.\n\n**경로 파라미터**\n- set_id: 문제 세트 ID\n- question_seq: 문제 번호(questionSeq)"
+              },
+              "response": [
+                {
+                  "name": "문제 답안/해설 응답",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [],
+                    "url": {
+                      "raw": "{{apis_url}}/questions/part7/658a1b2c3d4e5f6a7b8c9d0e/answers/1",
+                      "host": [
+                        "{{apis_url}}"
+                      ],
+                      "path": [
+                        "questions",
+                        "part7",
+                        "658a1b2c3d4e5f6a7b8c9d0e",
+                        "answers",
+                        "1"
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "{\n  \"set_id\": \"658a1b2c3d4e5f6a7b8c9d0e\",\n  \"question_seq\": 1,\n  \"answer\": \"C\",\n  \"explanation\": \"기사의 첫 문장에서 '통근자의 60% 이상이 버스 도착 시간을 확인하기 위해 모바일 앱을 사용하고 있다'고 언급하고 있으며, 전체 기사가 통근자를 위한 모바일 기술에 초점을 맞추고 있습니다.\"\n}"
+                }
+              ]
+            },
+            {
+              "name": "세트 유형 목록 조회",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{apis_url}}/questions/part7/set_types?used_only=false",
+                  "host": [
+                    "{{apis_url}}"
+                  ],
+                  "path": [
+                    "questions",
+                    "part7",
+                    "set_types"
+                  ],
+                  "query": [
+                    {
+                      "key": "used_only",
+                      "value": "false",
+                      "description": "True인 경우 데이터베이스에 실제 사용 중인 세트 유형만 반환"
+                    }
+                  ]
+                },
+                "description": "Part 7 문제 세트 유형 목록을 반환합니다.\n\n**쿼리 파라미터**\n- used_only: True인 경우 데이터베이스에 실제 사용 중인 세트 유형만 반환 (기본값: false)"
+              },
+              "response": [
+                {
+                  "name": "세트 유형 목록 응답",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [],
+                    "url": {
+                      "raw": "{{apis_url}}/questions/part7/set_types?used_only=false",
+                      "host": [
+                        "{{apis_url}}"
+                      ],
+                      "path": [
+                        "questions",
+                        "part7",
+                        "set_types"
+                      ],
+                      "query": [
+                        {
+                          "key": "used_only",
+                          "value": "false"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "{\n  \"Single\": {\"description\": \"단일 지문 세트\", \"required_passages\": 1},\n  \"Double\": {\"description\": \"이중 지문 세트\", \"required_passages\": 2},\n  \"Triple\": {\"description\": \"삼중 지문 세트\", \"required_passages\": 3}\n}"
+                }
+              ]
+            },
+            {
+              "name": "지문 유형 목록 조회",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{apis_url}}/questions/part7/passage_types?set_type=Single&used_only=false",
+                  "host": [
+                    "{{apis_url}}"
+                  ],
+                  "path": [
+                    "questions",
+                    "part7",
+                    "passage_types"
+                  ],
+                  "query": [
+                    {
+                      "key": "set_type",
+                      "value": "Single",
+                      "description": "문제 세트 유형 (Single, Double, Triple)"
+                    },
+                    {
+                      "key": "used_only",
+                      "value": "false",
+                      "description": "True인 경우 데이터베이스에 실제 사용 중인 지문 유형만 반환"
+                    }
+                  ]
+                },
+                "description": "Part 7 지문 유형 목록을 반환합니다.\n\n**쿼리 파라미터**\n- set_type: 문제 세트 유형 (Single, Double, Triple) (선택)\n- used_only: True인 경우 데이터베이스에 실제 사용 중인 지문 유형만 반환 (기본값: false)"
+              },
+              "response": [
+                {
+                  "name": "지문 유형 목록 응답",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [],
+                    "url": {
+                      "raw": "{{apis_url}}/questions/part7/passage_types?set_type=Single&used_only=false",
+                      "host": [
+                        "{{apis_url}}"
+                      ],
+                      "path": [
+                        "questions",
+                        "part7",
+                        "passage_types"
+                      ],
+                      "query": [
+                        {
+                          "key": "set_type",
+                          "value": "Single"
+                        },
+                        {
+                          "key": "used_only",
+                          "value": "false"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "[\n  \"Email\",\n  \"Letter\",\n  \"Memo\",\n  \"Notice\",\n  \"Advertisement\",\n  \"Article\",\n  \"Form\",\n  \"Schedule\",\n  \"Receipt\",\n  \"Chart\",\n  \"Chat\",\n  \"Report\",\n  \"Other\"\n]"
+                }
+              ]
+            },
+            {
+              "name": "지문 유형 조합 목록 조회",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{apis_url}}/questions/part7/passage_combinations?set_type=Double",
+                  "host": [
+                    "{{apis_url}}"
+                  ],
+                  "path": [
+                    "questions",
+                    "part7",
+                    "passage_combinations"
+                  ],
+                  "query": [
+                    {
+                      "key": "set_type",
+                      "value": "Double",
+                      "description": "문제 세트 유형 (Double, Triple)"
+                    }
+                  ]
+                },
+                "description": "Part 7 지문 유형 조합 목록을 반환합니다.\n주로 Double, Triple 세트에서 자주 사용되는 지문 유형 조합을 제공합니다.\n\n**쿼리 파라미터**\n- set_type: 문제 세트 유형 (Double, Triple)"
+              },
+              "response": [
+                {
+                  "name": "지문 유형 조합 목록 응답 (Double)",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [],
+                    "url": {
+                      "raw": "{{apis_url}}/questions/part7/passage_combinations?set_type=Double",
+                      "host": [
+                        "{{apis_url}}"
+                      ],
+                      "path": [
+                        "questions",
+                        "part7",
+                        "passage_combinations"
+                      ],
+                      "query": [
+                        {
+                          "key": "set_type",
+                          "value": "Double"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "[\n  [\"Email\", \"Letter\"],\n  [\"Article\", \"Form\"],\n  [\"Notice\", \"Memo\"],\n  [\"Advertisement\", \"Email\"]\n]"
+                },
+                {
+                  "name": "지문 유형 조합 목록 응답 (Triple)",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [],
+                    "url": {
+                      "raw": "{{apis_url}}/questions/part7/passage_combinations?set_type=Triple",
+                      "host": [
+                        "{{apis_url}}"
+                      ],
+                      "path": [
+                        "questions",
+                        "part7",
+                        "passage_combinations"
+                      ],
+                      "query": [
+                        {
+                          "key": "set_type",
+                          "value": "Triple"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "[\n  [\"Email\", \"Schedule\", \"Notice\"],\n  [\"Chart\", \"Article\", \"Form\"],\n  [\"Advertisement\", \"Article\", \"Form\"],\n  [\"Email\", \"Memo\", \"Chart\"],\n  [\"Letter\", \"Advertisement\", \"Receipt\"],\n  [\"Email\", \"Chat\", \"Report\"]\n]"
+                }
+              ]
+            },
+            {
+              "name": "난이도 목록 조회",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{apis_url}}/questions/part7/difficulties?set_type=Single&used_only=false",
+                  "host": [
+                    "{{apis_url}}"
+                  ],
+                  "path": [
+                    "questions",
+                    "part7",
+                    "difficulties"
+                  ],
+                  "query": [
+                    {
+                      "key": "set_type",
+                      "value": "Single",
+                      "description": "문제 세트 유형 (Single, Double, Triple)"
+                    },
+                    {
+                      "key": "used_only",
+                      "value": "false",
+                      "description": "True인 경우 데이터베이스에 실제 사용 중인 난이도만 반환"
+                    }
+                  ]
+                },
+                "description": "Part 7 난이도 목록을 반환합니다.\n\n**쿼리 파라미터**\n- set_type: 문제 세트 유형 (Single, Double, Triple) (선택)\n- used_only: True인 경우 데이터베이스에 실제 사용 중인 난이도만 반환 (기본값: false)"
+              },
+              "response": [
+                {
+                  "name": "난이도 목록 응답",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [],
+                    "url": {
+                      "raw": "{{apis_url}}/questions/part7/difficulties?set_type=Single&used_only=false",
+                      "host": [
+                        "{{apis_url}}"
+                      ],
+                      "path": [
+                        "questions",
+                        "part7",
+                        "difficulties"
+                      ],
+                      "query": [
+                        {
+                          "key": "set_type",
+                          "value": "Single"
+                        },
+                        {
+                          "key": "used_only",
+                          "value": "false"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "[\"Easy\", \"Medium\", \"Hard\"]"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "시스템 API (System API)",
+      "description": "시스템 모니터링 및 관리를 위한 API입니다.",
+      "item": [
+        {
+          "name": "상태 확인",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{apis_url}}/admin/system/health",
+              "host": [
+                "{{apis_url}}"
+              ],
+              "path": [
+                "admin",
+                "system",
+                "health"
+              ]
+            },
+            "description": "API 서버 상태를 확인합니다."
+          },
+          "response": [
+            {
+              "name": "상태 확인 응답",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{apis_url}}/admin/system/health",
+                  "host": [
+                    "{{apis_url}}"
+                  ],
+                  "path": [
+                    "admin",
+                    "system",
+                    "health"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"status\": \"online\",\n  \"message\": \"TOEIC Question Generator & API is running\",\n  \"environment\": \"production\",\n  \"uptime\": 345678,\n  \"version\": \"1.0.0\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "데이터베이스 상태 확인",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{apis_url}}/admin/system/db-status",
+              "host": [
+                "{{apis_url}}"
+              ],
+              "path": [
+                "admin",
+                "system",
+                "db-status"
+              ]
+            },
+            "description": "데이터베이스 연결 상태를 확인합니다."
+          },
+          "response": [
+            {
+              "name": "데이터베이스 상태 확인 응답",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{apis_url}}/admin/system/db-status",
+                  "host": [
+                    "{{apis_url}}"
+                  ],
+                  "path": [
+                    "admin",
+                    "system",
+                    "db-status"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"status\": \"online\",\n  \"connections\": {\n    \"current\": 12,\n    \"available\": 88,\n    \"totalCreated\": 150\n  },\n  \"network\": {\n    \"bytesIn\": 12345678,\n    \"bytesOut\": 87654321,\n    \"numRequests\": 9876\n  },\n  \"uptime\": 345678,\n  \"ok\": 1,\n  \"pool_stats\": {\n    \"max_pool_size\": 100,\n    \"min_pool_size\": 10,\n    \"current_checked_out\": 12\n  }\n}"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          "// 여기에 사전 요청 스크립트를 추가할 수 있습니다.",
+          "// 예: 인증 토큰 생성, 환경 변수 설정 등"
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          "// 여기에 테스트 스크립트를 추가할 수 있습니다.",
+          "// 예: 응답 검증, 환경 변수 저장 등",
+          "",
+          "// 기본 응답 검증 예시",
+          "pm.test(\"Status code is 200\", function () {",
+          "    pm.response.to.have.status(200);",
+          "});",
+          "",
+          "// JSON 응답 검증 예시",
+          "pm.test(\"Response is valid JSON\", function () {",
+          "    pm.response.to.be.json;",
+          "});"
+        ]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "apis_url",
+      "value": "http://ruoserver.iptime.org:30110/api/v1",
+      "type": "string",
+      "description": "사용자 API 기본 URL (배포 환경에 맞게 변경하세요)"
+    }
+  ]
+}
