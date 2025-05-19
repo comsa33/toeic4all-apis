@@ -46,3 +46,5 @@ spec:
           value: {{ .Values.mongodbUri }}
         - name: DATABASE_NAME
           value: {{ .Values.databaseName }}
+        - name: DEBUG
+          value: {{ .Values.debug }}
