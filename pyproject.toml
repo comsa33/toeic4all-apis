@@ -1,0 +1,16 @@
+[project]
+name = "toeic4all-apis"
+version = "0.1.0"
+description = "Toeic Question APIs"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "fastapi>=0.115.12",
+    "pydantic-settings>=2.9.1",
+    "pymongo>=4.13.0",
+    "python-dotenv>=1.1.0",
+    "uvicorn>=0.34.2",
+]
+
+[dependency-groups]
+dev = []
