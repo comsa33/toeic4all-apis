@@ -54,10 +54,6 @@ class MongoDBSettings(BaseSettings):
 class APISettings(BaseSettings):
     """API 관련 설정"""
 
-    gemini_api_key: str = Field(
-        default_factory=lambda: os.getenv("GEMINI_API_KEY", ""),
-        description="Gemini API 키",
-    )
     api_prefix: str = Field(
         default_factory=lambda: os.getenv("API_PREFIX", "/api/v1"),
         description="API 경로 접두사",
