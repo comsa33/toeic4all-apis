@@ -21,4 +21,4 @@ mongodbUri: ""
 mongodbMaxPoolSize: "100"
 mongodbMinPoolSize: "10"
 databaseName: "toeic4all"
-debug: true
+debug: "true"
