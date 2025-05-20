@@ -37,7 +37,7 @@ async def lifespan(app: FastAPI):
 
 # OAuth2 스키마 설정
 oauth2_scheme = OAuth2PasswordBearer(
-    tokenUrl=f"{settings.api_prefix}/auth/token"
+    tokenUrl=f"{settings.api_prefix}/swagger-auth/token"
 )
 
 # FastAPI 애플리케이션 생성 - lifespan 인자 추가
@@ -55,7 +55,7 @@ app = FastAPI(
     openapi_tags=[
         {
             "name": "인증",
-            "description": "인증 관련 엔드포인트. `/auth/token`에서 토큰을 얻은 후 오른쪽 상단의 '**Authorize**' 버튼을 클릭하여 인증할 수 있습니다.",
+            "description": "인증 관련 엔드포인트. `/swagger-auth/token`에서 토큰을 얻은 후 오른쪽 상단의 '**Authorize**' 버튼을 클릭하여 인증할 수 있습니다.",
         },
         {
             "name": "Questions - Part 5",
@@ -123,7 +123,7 @@ async def health_check(app_state: dict = Depends(get_app_state)):
     """API 서버 상태 확인 엔드포인트"""
     return {
         "status": "online",
-        "message": "TOEIC Question Generator & API is running",
+        "message": "TOEIC Question API is running",
         "environment": settings.environment,
         "uptime": (
             (
@@ -146,4 +146,4 @@ async def db_status():
 @app.get("/")
 async def root():
     """API 서버 상태 확인 엔드포인트"""
-    return {"status": "online", "message": "TOEIC Question Generator & API is running"}
+    return {"status": "online", "message": "TOEIC Question API is running"}
