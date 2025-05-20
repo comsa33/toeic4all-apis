@@ -46,5 +46,11 @@ spec:
           value: {{ .Values.mongodbUri }}
         - name: DATABASE_NAME
           value: {{ .Values.databaseName }}
+        - name: SECRET_KEY
+          value: "{{ .Values.secretKey }}"
+        - name: ALGORITHM
+          value: "{{ .Values.algorithm }}"
+        - name: AUTH_SERVER_URL
+          value: "{{ .Values.authServerUrl }}"
         - name: DEBUG
           value: "{{ .Values.debug }}"

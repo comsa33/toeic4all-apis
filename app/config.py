@@ -81,7 +81,23 @@ class AppSettings(BaseSettings):
     )
 
 
-class Settings(MongoDBSettings, APISettings, AppSettings):
+class AuthSettings(BaseSettings):
+    """인증 관련 설정"""
+    SECRET_KEY: str = Field(
+        default_factory=lambda: os.getenv("SECRET_KEY", ""),
+        description="JWT 서명에 사용되는 비밀 키",
+    )
+    ALGORITHM: str = Field(
+        default_factory=lambda: os.getenv("ALGORITHM", "HS256"),
+        description="JWT 서명 알고리즘",
+    )
+    AUTH_SERVER_URL: str = Field(
+        default_factory=lambda: os.getenv("AUTH_SERVER_URL", "http://localhost:8000/api/v1"),
+        description="인증 서버 URL",
+    )
+
+
+class Settings(MongoDBSettings, APISettings, AppSettings, AuthSettings):
     """모든 설정을 통합한 클래스"""
 
     @property

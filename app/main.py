@@ -2,11 +2,15 @@ import datetime
 import logging
 from contextlib import asynccontextmanager
 
-from fastapi import Depends, FastAPI
+from fastapi import Depends, FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
+from fastapi.openapi.models import OAuthFlows as OAuthFlowsModel
+from fastapi.openapi.models import OAuthFlowPassword
 
 from app.config import settings
 from app.routes.api import part5_api, part6_api, part7_api
+from app.routes.auth import auth_router
 from app.utils.db import close_mongodb_connection, connect_to_mongodb, mongodb
 from app.utils.logger import setup_logging
 
@@ -31,6 +35,10 @@ async def lifespan(app: FastAPI):
     await close_mongodb_connection()
     logger.info("MongoDB connection closed")
 
+# OAuth2 스키마 설정
+oauth2_scheme = OAuth2PasswordBearer(
+    tokenUrl=f"{settings.api_prefix}/auth/token"
+)
 
 # FastAPI 애플리케이션 생성 - lifespan 인자 추가
 app = FastAPI(
@@ -38,8 +46,34 @@ app = FastAPI(
     description="TOEIC 문제 조회 API",
     version="1.0.0",
     docs_url="/docs" if settings.debug else None,
-    lifespan=lifespan,  # 라이프스팬 컨텍스트 매니저 지정
+    lifespan=lifespan,
+    openapi_url=f"{settings.api_prefix}/openapi.json",
+    swagger_ui_init_oauth={
+        "usePkceWithAuthorizationCodeGrant": True,
+        "clientId": "swagger",
+    },
+    openapi_tags=[
+        {
+            "name": "인증",
+            "description": "인증 관련 엔드포인트. `/auth/token`에서 토큰을 얻은 후 오른쪽 상단의 '**Authorize**' 버튼을 클릭하여 인증할 수 있습니다.",
+        },
+        {
+            "name": "Questions - Part 5",
+            "description": "Part 5 문법/어휘 문제 조회 API. 인증이 필요합니다.",
+        },
+        {
+            "name": "Questions - Part 6",
+            "description": "Part 6 문법/어휘 문제 조회 API. 인증이 필요합니다.",
+        },
+        {
+            "name": "Questions - Part 7",
+            "description": "Part 7 문법/어휘 문제 조회 API. 인증이 필요합니다.",
+        },
+    ],
 )
+
+# security_schemes 설정
+app.swagger_ui_oauth2_redirect_url = f"{settings.api_prefix}/oauth2-redirect"
 
 # CORS 미들웨어 설정
 app.add_middleware(
@@ -75,6 +109,11 @@ app.include_router(
     part7_api.router,
     prefix=f"{settings.api_prefix}/questions/part7",
     tags=["Questions - Part 7"],
+)
+app.include_router(
+    auth_router,
+    prefix=f"{settings.api_prefix}/auth",
+    tags=["인증"],
 )
 
 

@@ -2,15 +2,18 @@
 from typing import Optional
 
 from bson import ObjectId
-from fastapi import APIRouter, HTTPException, Query
+from fastapi import APIRouter, HTTPException, Query, Depends
 
 from app.schemas.api.part5_api_schemas import (
     Part5AnswerResponse,
     Part5QuestionsResponse,
 )
 from app.services.query_service import QueryService
+from app.middleware.auth_middleware import get_current_user
 
-router = APIRouter()
+router = APIRouter(
+    dependencies=[Depends(get_current_user)]
+)
 query_service = QueryService()
 
 
