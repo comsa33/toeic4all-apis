@@ -112,7 +112,7 @@ app.include_router(
 )
 app.include_router(
     auth_router,
-    prefix=f"{settings.api_prefix}/auth",
+    prefix=f"{settings.api_prefix}/swagger-auth",
     tags=["인증"],
 )
 
