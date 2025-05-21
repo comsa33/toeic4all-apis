@@ -51,11 +51,31 @@ class MongoDBSettings(BaseSettings):
         return v
 
 
+class RedisSettings(BaseSettings):
+    """Redis 관련 설정"""
+    redis_url: str = Field(
+        default_factory=lambda: os.getenv("REDIS_URL", "redis://localhost:6379/0"),
+        description="Redis 연결 URL"
+    )
+    redis_ttl: int = Field(
+        default_factory=lambda: int(os.getenv("REDIS_TTL", "3600")),
+        description="Redis 키 기본 TTL (초)"
+    )
+    redis_rate_limit_max: int = Field(
+        default_factory=lambda: int(os.getenv("REDIS_RATE_LIMIT_MAX", "100")),
+        description="API 최대 요청 수 (기본 분당 100회)"
+    )
+    redis_rate_limit_window: int = Field(
+        default_factory=lambda: int(os.getenv("REDIS_RATE_LIMIT_WINDOW", "60")),
+        description="레이트 리밋 윈도우 (초)"
+    )
+
+
 class APISettings(BaseSettings):
     """API 관련 설정"""
 
     api_prefix: str = Field(
-        default_factory=lambda: os.getenv("API_PREFIX", "/api/v1"),
+        default_factory=lambda: os.getenv("API_PREFIX", "/api/v1/questions"),
         description="API 경로 접두사",
     )
 
@@ -97,7 +117,7 @@ class AuthSettings(BaseSettings):
     )
 
 
-class Settings(MongoDBSettings, APISettings, AppSettings, AuthSettings):
+class Settings(MongoDBSettings, APISettings, AppSettings, AuthSettings, RedisSettings):
     """모든 설정을 통합한 클래스"""
 
     @property

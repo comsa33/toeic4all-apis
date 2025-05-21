@@ -54,3 +54,11 @@ spec:
           value: "{{ .Values.authServerUrl }}"
         - name: DEBUG
           value: "{{ .Values.debug }}"
+        - name: REDIS_URL
+          value: {{ .Values.redisUrl }}
+        - name: REDIS_TTL
+          value: "{{ .Values.redisTtl | default 3600 }}"
+        - name: REDIS_RATE_LIMIT_MAX
+          value: "{{ .Values.redisRateLimitMax | default 100 }}"
+        - name: REDIS_RATE_LIMIT_WINDOW
+          value: "{{ .Values.redisRateLimitWindow | default 60 }}"

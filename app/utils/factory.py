@@ -2,7 +2,7 @@ from functools import lru_cache
 from typing import Any, Dict
 
 from app.config import Settings, settings
-from app.utils.db import AsyncMongoDBClient, mongodb
+from app.db.mongodb import AsyncMongoDBClient, mongodb
 from app.utils.logger import logger
 
 

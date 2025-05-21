@@ -5,7 +5,7 @@ from typing import Any, Dict, Optional
 
 import psutil
 
-from app.utils.db import mongodb
+from app.db.mongodb import mongodb
 from app.utils.logger import logger
 
 

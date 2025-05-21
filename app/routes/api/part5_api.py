@@ -1,33 +1,34 @@
-# app/routes/api/part5_api.py
-from typing import Optional
+from typing import Optional, List
 
 from bson import ObjectId
-from fastapi import APIRouter, HTTPException, Query, Depends
+from fastapi import APIRouter, HTTPException, Query, Depends, Request, Path
 
 from app.schemas.api.part5_api_schemas import (
     Part5AnswerResponse,
     Part5QuestionsResponse,
 )
-from app.services.query_service import QueryService
+from app.services.cache_service import CachedQueryService
+from app.db.redis_client import get_redis, RedisCache
 from app.middleware.auth_middleware import get_current_user
 
-router = APIRouter(
-    dependencies=[Depends(get_current_user)]
-)
-query_service = QueryService()
-
+router = APIRouter(dependencies=[Depends(get_current_user)])
+cached_query_service = CachedQueryService()
+part5_cache = RedisCache("part5_api", default_ttl=3600)  # 1시간
 
 @router.get("/", response_model=Part5QuestionsResponse)
 async def get_part5_questions(
+    request: Request,
     category: Optional[str] = None,
     subtype: Optional[str] = None,
     difficulty: Optional[str] = None,
     keyword: Optional[str] = None,
     limit: int = Query(10, ge=1, le=30),
     page: int = Query(1, ge=1),
+    skip_cache: bool = Query(False, description="캐시를 건너뛰고 DB에서 직접 조회"),
+    redis = Depends(get_redis),
 ):
     """
-    Part 5 문제를 필터링하여 랜덤으로 조회합니다.
+    Part 5 문제를 필터링하여 조회합니다.
 
     - **category**: 문법 카테고리 (문법, 어휘, 전치사/접속사/접속부사)
     - **subtype**: 서브 카테고리 (시제, 수일치, 동의어 등)
@@ -35,24 +36,37 @@ async def get_part5_questions(
     - **keyword**: 검색 키워드 (문제/선택지 내용)
     - **limit**: 조회할 문제 수 (최대 30)
     - **page**: 페이지 번호
+    - **skip_cache**: 캐시를 건너뛰고 DB에서 직접 조회할지 여부
     """
     try:
-        questions = await query_service.get_part5_questions(
-            category, subtype, difficulty, keyword, limit, page
+        # 캐시 키 생성
+        cache_key = f"questions:{category}:{subtype}:{difficulty}:{keyword}:{limit}:{page}"
+        
+        # 캐싱된 결과 확인
+        if not skip_cache:
+            cached_result = await part5_cache.get(cache_key)
+            if cached_result:
+                return Part5QuestionsResponse(**cached_result)
+        
+        # 캐싱된 조회 서비스 사용
+        questions = await cached_query_service.get_part5_questions(
+            category, subtype, difficulty, keyword, limit, page, use_cache=not skip_cache
         )
 
         # 총 문서 수 계산 (페이지네이션용)
-        total_count = await query_service.get_part5_total_count(
-            category, subtype, difficulty, keyword
+        total_count = await cached_query_service.get_part5_total_count(
+            category, subtype, difficulty, keyword, use_cache=not skip_cache
         )
 
         total_pages = (total_count + limit - 1) // limit
 
         # ID 문자열 변환 처리
         for q in questions:
-            q["id"] = str(q.pop("_id", None))
+            if "_id" in q:
+                q["id"] = str(q.pop("_id", None))
 
-        return Part5QuestionsResponse(
+        # 응답 생성
+        response = Part5QuestionsResponse(
             success=True,
             count=len(questions),
             total=total_count,
@@ -60,19 +74,29 @@ async def get_part5_questions(
             total_pages=total_pages,
             questions=questions,
         )
+        
+        # 결과 캐싱 (비어있지 않은 경우)
+        if not skip_cache and questions and len(questions) > 0:
+            await part5_cache.set(cache_key, response.model_dump())
+            
+        return response
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"문제 조회 중 오류 발생: {str(e)}")
 
 
 @router.get("/{question_id}/answer", response_model=Part5AnswerResponse)
-async def get_part5_answer(question_id: str):
+async def get_part5_answer(
+    question_id: str = Path(..., description="문제 ID"),
+    request: Request = None,
+):
     """
     Part 5 문제의 정답, 해설, 어휘 정보를 조회합니다.
 
     - **question_id**: 문제 ID
     """
     try:
-        answer_data = await query_service.get_part5_answer(ObjectId(question_id))
+        # 정답 정보는 캐싱하지 않음 (보안상 이유로)
+        answer_data = await cached_query_service.get_part5_answer(ObjectId(question_id))
         if not answer_data:
             raise HTTPException(status_code=404, detail="문제를 찾을 수 없습니다.")
 
@@ -82,74 +106,117 @@ async def get_part5_answer(question_id: str):
 
 
 @router.get("/categories")
-async def get_part5_categories(used_only: bool = False):
+async def get_part5_categories(
+    request: Request,
+    used_only: bool = True,
+    skip_cache: bool = False,
+    redis = Depends(get_redis),
+):
     """
     Part 5 문법 카테고리 목록을 반환합니다.
 
     - **used_only**: True인 경우 데이터베이스에 실제 사용 중인 카테고리만 반환
+    - **skip_cache**: 캐시를 건너뛰고 DB에서 직접 조회할지 여부
     """
+    cache_key = f"categories:{used_only}"
+    
+    # 캐싱된 결과 확인
+    if not skip_cache:
+        cached_result = await part5_cache.get(cache_key)
+        if cached_result:
+            return cached_result
+    
     if used_only:
         # 실제 사용 중인 카테고리만 반환
-        categories = await query_service.get_part5_used_categories()
+        categories = await cached_query_service.get_part5_categories(use_cache=not skip_cache)
     else:
         # 전체 카테고리 목록 반환
         categories = ["문법", "어휘", "전치사/접속사/접속부사"]
 
+    # 결과 캐싱 (24시간)
+    if not skip_cache:
+        await part5_cache.set(cache_key, categories, ttl=24*3600)
+        
     return categories
 
 
 @router.get("/subtypes")
-async def get_part5_subtypes(category: Optional[str] = None, used_only: bool = False):
+async def get_part5_subtypes(
+    request: Request,
+    category: Optional[str] = None,
+    used_only: bool = True,
+    skip_cache: bool = False,
+    redis = Depends(get_redis),
+):
     """
     Part 5 문법 서브카테고리 목록을 반환합니다.
 
     - **category**: 문법 카테고리 (문법, 어휘, 전치사/접속사/접속부사)
     - **used_only**: True인 경우 데이터베이스에 실제 사용 중인 서브타입만 반환
+    - **skip_cache**: 캐시를 건너뛰고 DB에서 직접 조회할지 여부
     """
+    cache_key = f"subtypes:{category}:{used_only}"
+    
+    # 캐싱된 결과 확인
+    if not skip_cache:
+        cached_result = await part5_cache.get(cache_key)
+        if cached_result:
+            return cached_result
+    
     if used_only:
         # 실제 사용 중인 서브타입만 반환
-        return await query_service.get_part5_used_subtypes(category)
+        result = await cached_query_service.get_part5_subtypes(category, use_cache=not skip_cache)
+    else:
+        # 정적 서브타입 목록
+        category_subtypes = {
+            "문법": [
+                "시제",
+                "수일치",
+                "태(수동/능동)",
+                "관계사",
+                "비교구문",
+                "가정법",
+                "부정사/동명사",
+            ],
+            "어휘": [
+                "동의어",
+                "반의어",
+                "관용표현",
+                "Collocation",
+                "Phrasal Verb",
+            ],
+            "전치사/접속사/접속부사": [
+                "시간/장소 전치사",
+                "원인/결과",
+                "양보",
+                "조건",
+                "접속부사",
+            ],
+        }
 
-    # 정적 서브타입 목록
-    category_subtypes = {
-        "문법": [
-            "시제",
-            "수일치",
-            "태(수동/능동)",
-            "관계사",
-            "비교구문",
-            "가정법",
-            "부정사/동명사",
-        ],
-        "어휘": [
-            "동의어",
-            "반의어",
-            "관용표현",
-            "Collocation",
-            "Phrasal Verb",
-        ],
-        "전치사/접속사/접속부사": [
-            "시간/장소 전치사",
-            "원인/결과",
-            "양보",
-            "조건",
-            "접속부사",
-        ],
-    }
-
-    if category:
-        if category not in category_subtypes:
-            return []
-        return category_subtypes[category]
-
-    return category_subtypes
+        if category:
+            if category not in category_subtypes:
+                result = []
+            else:
+                result = category_subtypes[category]
+        else:
+            result = category_subtypes
+            
+    # 결과 캐싱 (24시간)
+    if not skip_cache:
+        await part5_cache.set(cache_key, result, ttl=24*3600)
+            
+    return result
 
 
 @router.get("/difficulties")
 async def get_difficulties(
+    request: Request,
     category: Optional[str] = None,
     subtype: Optional[str] = None,
-    used_only: bool = False,
+    used_only: bool = True,
+    skip_cache: bool = False,
+    redis = Depends(get_redis),
 ):
     """
     Part 5 난이도 목록을 반환합니다.
@@ -157,10 +224,25 @@ async def get_difficulties(
     - **category**: 문법 카테고리 (문법, 어휘, 전치사/접속사/접속부사)
     - **subtype**: 서브 카테고리
     - **used_only**: True인 경우 데이터베이스에 실제 사용 중인 난이도만 반환
+    - **skip_cache**: 캐시를 건너뛰고 DB에서 직접 조회할지 여부
     """
+    cache_key = f"difficulties:{category}:{subtype}:{used_only}"
+    
+    # 캐싱된 결과 확인
+    if not skip_cache:
+        cached_result = await part5_cache.get(cache_key)
+        if cached_result:
+            return cached_result
+            
     if used_only:
         # 실제 사용 중인 난이도만 반환
-        return await query_service.get_part5_used_difficulties(category, subtype)
-
-    # 기본 난이도 목록
-    return ["Easy", "Medium", "Hard"]
+        result = await cached_query_service.get_part5_difficulties(category, subtype, use_cache=not skip_cache)
+    else:
+        # 기본 난이도 목록
+        result = ["Easy", "Medium", "Hard"]
+    
+    # 결과 캐싱 (24시간)
+    if not skip_cache:
+        await part5_cache.set(cache_key, result, ttl=24*3600)
+        
+    return result

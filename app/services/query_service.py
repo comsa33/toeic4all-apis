@@ -3,7 +3,7 @@ from typing import Dict, List, Optional
 
 from bson import ObjectId
 
-from app.utils.db import get_collection
+from app.db.mongodb import get_collection
 from app.utils.logger import logger
 
 
