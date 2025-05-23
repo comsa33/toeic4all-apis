@@ -1,10 +1,12 @@
 from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
 from jose import JWTError, jwt
+
 from app.config import settings
 
 # OAuth2PasswordBearer 설정
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl=f"{settings.api_prefix}/swagger-auth/token")
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/swagger-auth/token")
+
 
 async def verify_token(token: str = Depends(oauth2_scheme)):
     credentials_exception = HTTPException(
@@ -12,7 +14,7 @@ async def verify_token(token: str = Depends(oauth2_scheme)):
         detail="인증할 수 없습니다",
         headers={"WWW-Authenticate": "Bearer"},
     )
-    
+
     try:
         payload = jwt.decode(
             token, settings.SECRET_KEY, algorithms=[settings.ALGORITHM]
@@ -23,6 +25,7 @@ async def verify_token(token: str = Depends(oauth2_scheme)):
         return payload
     except JWTError:
         raise credentials_exception
+
 
 # 현재 사용자 가져오기
 async def get_current_user(payload: dict = Depends(verify_token)):
