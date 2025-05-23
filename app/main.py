@@ -61,9 +61,7 @@ app = FastAPI(
     lifespan=lifespan,
     # OpenAPI URL을 절대 경로로 설정
     openapi_url=(
-        "/api/v1/questions/openapi.json"
-        if settings.environment == "production"
-        else "/openapi.json"
+        "/openapi.json" if settings.environment == "production" else "/openapi.json"
     ),
     # root_path 설정으로 프록시 뒤에서도 올바른 URL 생성
     root_path=root_path,
