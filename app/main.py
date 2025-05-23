@@ -48,14 +48,25 @@ async def lifespan(app: FastAPI):
     logger.info("MongoDB connection closed")
 
 
+# 프로덕션 환경에서 root_path 설정
+root_path = "/api/v1/questions" if settings.environment == "production" else ""
+
 # FastAPI 애플리케이션 생성
 app = FastAPI(
     title="TOEIC Question API",
     description="TOEIC 문제 조회 API",
     version="1.0.0",
     docs_url="/docs" if settings.debug else None,
+    redoc_url="/redoc" if settings.debug else None,
     lifespan=lifespan,
-    openapi_url="/openapi.json",
+    # OpenAPI URL을 절대 경로로 설정
+    openapi_url=(
+        "/api/v1/questions/openapi.json"
+        if settings.environment == "production"
+        else "/openapi.json"
+    ),
+    # root_path 설정으로 프록시 뒤에서도 올바른 URL 생성
+    root_path=root_path,
     swagger_ui_init_oauth={
         "usePkceWithAuthorizationCodeGrant": True,
         "clientId": "swagger",
@@ -295,8 +306,16 @@ async def clear_cache(category: str = None, redis=Depends(get_redis)):
 @app.get("/")
 async def root():
     """API 서버 상태 확인 엔드포인트"""
+    docs_url = (
+        "/api/v1/questions/docs" if settings.environment == "production" else "/docs"
+    )
+    redoc_url = (
+        "/api/v1/questions/redoc" if settings.environment == "production" else "/redoc"
+    )
+
     return {
         "status": "online",
         "message": "TOEIC Question API is running",
-        "docs": "/docs",
+        "docs": docs_url,
+        "redoc": redoc_url,
     }
