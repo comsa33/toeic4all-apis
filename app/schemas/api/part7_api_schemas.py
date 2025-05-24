@@ -1,7 +1,9 @@
 # app/schemas/api/part7_api_schemas.py
-from typing import List, Optional
+from typing import Dict, List, Optional
 
 from pydantic import BaseModel, Field
+
+from app.schemas.common import MetaDataResponse
 
 
 class Part7Filter(BaseModel):
@@ -69,3 +71,35 @@ class Part7AnswerResponse(BaseModel):
     question_seq: int
     answer: str
     explanation: str
+
+
+# 메타데이터 응답 모델들
+class SetTypeInfo(BaseModel):
+    """세트 유형 정보"""
+
+    description: str
+    required_passages: int
+
+
+class Part7SetTypesResponse(MetaDataResponse[Dict[str, SetTypeInfo]]):
+    """Part 7 세트 유형 목록 응답"""
+
+    pass
+
+
+class Part7PassageTypesResponse(MetaDataResponse[List[str]]):
+    """Part 7 지문 유형 목록 응답"""
+
+    pass
+
+
+class Part7PassageCombinationsResponse(MetaDataResponse[List[List[str]]]):
+    """Part 7 지문 유형 조합 목록 응답"""
+
+    pass
+
+
+class Part7DifficultiesResponse(MetaDataResponse[List[str]]):
+    """Part 7 난이도 목록 응답"""
+
+    pass

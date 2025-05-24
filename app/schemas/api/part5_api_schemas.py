@@ -1,6 +1,8 @@
-from typing import List, Optional
+from typing import Dict, List, Optional, Union
 
 from pydantic import BaseModel, Field
+
+from app.schemas.common import MetaDataResponse
 
 
 class Part5QuestionFilter(BaseModel):
@@ -64,3 +66,22 @@ class Part5AnswerResponse(BaseModel):
     answer: str
     explanation: str
     vocabulary: Optional[List[VocabularyItem]] = None
+
+
+# 메타데이터 응답 모델들
+class Part5CategoriesResponse(MetaDataResponse[List[str]]):
+    """Part 5 카테고리 목록 응답"""
+
+    pass
+
+
+class Part5SubtypesResponse(MetaDataResponse[Union[List[str], Dict[str, List[str]]]]):
+    """Part 5 서브타입 목록 응답"""
+
+    pass
+
+
+class Part5DifficultiesResponse(MetaDataResponse[List[str]]):
+    """Part 5 난이도 목록 응답"""
+
+    pass

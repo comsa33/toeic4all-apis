@@ -2,6 +2,8 @@ from typing import List, Optional
 
 from pydantic import BaseModel, Field
 
+from app.schemas.common import MetaDataResponse
+
 
 class Part6Filter(BaseModel):
     """Part 6 문제 조회 필터"""
@@ -59,3 +61,16 @@ class Part6AnswerResponse(BaseModel):
     question_seq: int
     answer: str
     explanation: str
+
+
+# 메타데이터 응답 모델들
+class Part6PassageTypesResponse(MetaDataResponse[List[str]]):
+    """Part 6 지문 유형 목록 응답"""
+
+    pass
+
+
+class Part6DifficultiesResponse(MetaDataResponse[List[str]]):
+    """Part 6 난이도 목록 응답"""
+
+    pass
