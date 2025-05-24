@@ -1,8 +1,9 @@
+# app/schemas/api/part5_api_schemas.py
 from typing import Dict, List, Optional, Union
 
 from pydantic import BaseModel, Field
 
-from app.schemas.common import MetaDataResponse
+from app.schemas.common import BaseResponse, MetaDataResponse, PaginatedResponse
 
 
 class Part5QuestionFilter(BaseModel):
@@ -38,15 +39,16 @@ class Part5QuestionResponse(BaseModel):
     choices: List[Choice]
 
 
-class Part5QuestionsResponse(BaseModel):
+class Part5QuestionsData(BaseModel):
+    """Part 5 문제 목록 데이터"""
+
+    questions: List[Part5QuestionResponse]
+
+
+class Part5QuestionsResponse(PaginatedResponse[Part5QuestionsData]):
     """Part 5 문제 목록 응답"""
 
-    success: bool = True
-    count: int
-    total: int
-    page: int
-    total_pages: int
-    questions: List[Part5QuestionResponse]
+    pass
 
 
 class VocabularyItem(BaseModel):
@@ -59,13 +61,19 @@ class VocabularyItem(BaseModel):
     exampleTranslation: str
 
 
-class Part5AnswerResponse(BaseModel):
-    """Part 5 정답/해설 응답"""
+class Part5AnswerData(BaseModel):
+    """Part 5 정답/해설 데이터"""
 
     id: str
     answer: str
     explanation: str
     vocabulary: Optional[List[VocabularyItem]] = None
+
+
+class Part5AnswerResponse(BaseResponse[Part5AnswerData]):
+    """Part 5 정답/해설 응답"""
+
+    pass
 
 
 # 메타데이터 응답 모델들

@@ -3,7 +3,7 @@ from typing import Dict, List, Optional
 
 from pydantic import BaseModel, Field
 
-from app.schemas.common import MetaDataResponse
+from app.schemas.common import BaseResponse, MetaDataResponse, PaginatedResponse
 
 
 class Part7Filter(BaseModel):
@@ -53,24 +53,31 @@ class Part7Set(BaseModel):
     questions: List[Part7Question]
 
 
-class Part7SetsResponse(BaseModel):
-    """Part 7 문제 세트 목록 응답"""
+class Part7SetsData(BaseModel):
+    """Part 7 문제 세트 목록 데이터"""
 
-    success: bool = True
-    count: int
-    total: int
-    page: int
-    total_pages: int
     sets: List[Part7Set]
 
 
-class Part7AnswerResponse(BaseModel):
-    """Part 7 정답/해설 응답"""
+class Part7SetsResponse(PaginatedResponse[Part7SetsData]):
+    """Part 7 문제 세트 목록 응답"""
+
+    pass
+
+
+class Part7AnswerData(BaseModel):
+    """Part 7 정답/해설 데이터"""
 
     set_id: str
     question_seq: int
     answer: str
     explanation: str
+
+
+class Part7AnswerResponse(BaseResponse[Part7AnswerData]):
+    """Part 7 정답/해설 응답"""
+
+    pass
 
 
 # 메타데이터 응답 모델들

@@ -19,6 +19,15 @@ class MetaDataResponse(BaseResponse[T], Generic[T]):
     pass
 
 
+class PaginatedResponse(BaseResponse[T], Generic[T]):
+    """페이지네이션 응답 구조"""
+
+    count: int
+    total: int
+    page: int
+    total_pages: int
+
+
 class ErrorResponse(BaseModel):
     """오류 응답 구조"""
 

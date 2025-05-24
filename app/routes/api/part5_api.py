@@ -1,3 +1,4 @@
+# app/routes/api/part5_api.py
 from typing import Optional
 
 from bson import ObjectId
@@ -6,9 +7,11 @@ from fastapi import APIRouter, Depends, HTTPException, Path, Query, Request
 from app.db.redis_client import RedisCache, get_redis
 from app.middleware.auth_middleware import get_current_user
 from app.schemas.api.part5_api_schemas import (
+    Part5AnswerData,
     Part5AnswerResponse,
     Part5CategoriesResponse,
     Part5DifficultiesResponse,
+    Part5QuestionsData,
     Part5QuestionsResponse,
     Part5SubtypesResponse,
 )
@@ -80,11 +83,12 @@ async def get_part5_questions(
         # 응답 생성
         response = Part5QuestionsResponse(
             success=True,
+            message="Part 5 문제 목록을 성공적으로 조회했습니다.",
+            data=Part5QuestionsData(questions=questions),
             count=len(questions),
             total=total_count,
             page=page,
             total_pages=total_pages,
-            questions=questions,
         )
 
         # 결과 캐싱 (비어있지 않은 경우)
@@ -112,7 +116,11 @@ async def get_part5_answer(
         if not answer_data:
             raise HTTPException(status_code=404, detail="문제를 찾을 수 없습니다.")
 
-        return answer_data
+        return Part5AnswerResponse(
+            success=True,
+            message="Part 5 정답 정보를 성공적으로 조회했습니다.",
+            data=Part5AnswerData(**answer_data),
+        )
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"정답 조회 중 오류 발생: {str(e)}")
 

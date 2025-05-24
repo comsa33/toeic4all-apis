@@ -1,3 +1,4 @@
+# app/routes/api/part6_api.py
 from typing import Optional
 
 from bson import ObjectId
@@ -6,9 +7,11 @@ from fastapi import APIRouter, Depends, HTTPException, Path, Query, Request
 from app.db.redis_client import RedisCache, get_redis
 from app.middleware.auth_middleware import get_current_user
 from app.schemas.api.part6_api_schemas import (
+    Part6AnswerData,
     Part6AnswerResponse,
     Part6DifficultiesResponse,
     Part6PassageTypesResponse,
+    Part6SetsData,
     Part6SetsResponse,
 )
 from app.services.cache_service import CachedQueryService
@@ -67,11 +70,12 @@ async def get_part6_sets(
         # 응답 생성
         response = Part6SetsResponse(
             success=True,
+            message="Part 6 문제 세트 목록을 성공적으로 조회했습니다.",
+            data=Part6SetsData(sets=sets),
             count=len(sets),
             total=total_count,
             page=page,
             total_pages=total_pages,
-            sets=sets,
         )
 
         # 결과 캐싱 (비어있지 않은 경우)
@@ -105,7 +109,11 @@ async def get_part6_answer(
         if not answer_data:
             raise HTTPException(status_code=404, detail="해당 문제를 찾을 수 없습니다.")
 
-        return answer_data
+        return Part6AnswerResponse(
+            success=True,
+            message="Part 6 정답 정보를 성공적으로 조회했습니다.",
+            data=Part6AnswerData(**answer_data),
+        )
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"정답 조회 중 오류 발생: {str(e)}")
 
